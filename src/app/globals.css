@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cormorant Garamond", "Georgia", serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-bg: #060608;
+  --color-bg-card: #0c0c10;
+  --color-bg-elevated: #111116;
+  --color-border: #1e1e24;
+  --color-border-subtle: #15151a;
+
+  --color-text-primary: #f0ece4;
+  --color-text-secondary: #9a9590;
+  --color-text-muted: #5e5a55;
+
+  --color-gold: #c8a44e;
+  --color-gold-light: #d4b76a;
+  --color-gold-dark: #a88a3a;
+  --color-gold-glow: rgba(200, 164, 78, 0.12);
+
+  --color-success: #34d399;
+  --color-error: #f87171;
+}
+
+/* ── Base ───────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: var(--color-gold);
+  color: var(--color-bg);
+}
+
+/* ── Scrollbar ──────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-gold-dark); }
+
+/* ── Focus visible ──────────────────────────────────── */
+*:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Gold gradient text ─────────────────────────────── */
+.text-gradient-gold {
+  background: linear-gradient(135deg, var(--color-gold-light), var(--color-gold), var(--color-gold-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Gold glow ──────────────────────────────────────── */
+.glow-gold {
+  box-shadow: 0 0 40px rgba(200, 164, 78, 0.08), 0 0 80px rgba(200, 164, 78, 0.04);
+}
+
+.glow-gold-strong {
+  box-shadow: 0 0 30px rgba(200, 164, 78, 0.15), 0 0 60px rgba(200, 164, 78, 0.08);
+}
+
+/* ── Divider ────────────────────────────────────────── */
+.divider-gold {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold-dark), transparent);
+}
+
+/* ── Card hover ─────────────────────────────────────── */
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(200, 164, 78, 0.08);
+  border-color: var(--color-gold-dark);
+}
+
+/* ── Animate float ──────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.animate-float { animation: float 6s ease-in-out infinite; }
+
+/* ── Animate pulse gold ─────────────────────────────── */
+@keyframes pulse-gold {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+.animate-pulse-gold { animation: pulse-gold 3s ease-in-out infinite; }
+
+/* ── Reduced motion ─────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
