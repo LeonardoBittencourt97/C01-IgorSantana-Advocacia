@@ -24,7 +24,9 @@ export const COMPANY = {
       "Rua Pedro Gusso, 4127, Sala 6 — CIC, Curitiba/PR, 81315-000",
   },
   mapsUrl:
-    "https://www.google.com/maps/place/Igor+Santana+Advocacia+Trabalhista/@-25.4531,-49.3182,17z",
+    "https://www.google.com/maps/place/Igor+Santana+Advocacia+Trabalhista/data=!4m2!3m1!1s0x0:0xcc20852449a123f4?sa=X&ved=1t:2428&ictx=111",
+  mapsRoutesUrl:
+    "https://www.google.com/maps/dir//R.+Pedro+Gusso,+4127+-+Sl+6+-+Cidade+Industrial+de+Curitiba,+Curitiba+-+PR,+81315-000",
   coordinates: { lat: -25.4531, lng: -49.3182 },
 } as const;
 
@@ -270,11 +272,11 @@ export const LINKTREE = {
   title: "Igor Santana Advocacia",
   subtitle: "Advogado Trabalhista | OAB/PR 128.723",
   links: [
-    { label: "🌐 Site Oficial", url: "https://igorsantanaadv.com.br" },
-    { label: "💬 WhatsApp Direto", url: `https://wa.me/${COMPANY.phoneFormatted}?text=${encodeURIComponent(COMPANY.whatsappMessage)}` },
-    { label: "📸 Instagram", url: SOCIALS[0].url },
-    { label: "📘 Facebook", url: SOCIALS[1].url },
-    { label: "💼 LinkedIn", url: SOCIALS[2].url },
-    { label: "📍 Localização no Google", url: COMPANY.mapsUrl },
+    { label: "Site Oficial", url: "https://igorsantana-advocacia.vercel.app", icon: "globe" as const },
+    { label: "WhatsApp", url: `https://wa.me/${COMPANY.phoneFormatted}?text=${encodeURIComponent(COMPANY.whatsappMessage)}`, icon: "whatsapp" as const },
+    { label: "Instagram", url: SOCIALS[0].url, icon: "instagram" as const },
+    { label: "Facebook", url: SOCIALS[1].url, icon: "facebook" as const },
+    { label: "LinkedIn", url: SOCIALS[2].url, icon: "linkedin" as const },
+    { label: "Localização", url: COMPANY.mapsRoutesUrl, icon: "mapPin" as const },
   ],
 } as const;
