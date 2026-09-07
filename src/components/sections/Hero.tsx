@@ -4,6 +4,7 @@ import { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Award, ChevronDown } from 'lucide-react';
+import gsap from 'gsap';
 import { company } from '@/lib/constants';
 
 export default function Hero() {
@@ -17,67 +18,44 @@ export default function Hero() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const loadAndAnimate = async () => {
-      try {
-        const gsapModule = await import('gsap');
-        const gsap = gsapModule.default;
+    const prefersReduced = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+    if (prefersReduced) return;
 
-        const prefersReduced = window.matchMedia(
-          '(prefers-reduced-motion: reduce)'
-        ).matches;
-        if (prefersReduced) return;
+    // Collect all animatable elements
+    const els = [
+      taglineRef.current,
+      headingRef.current,
+      descRef.current,
+      ctaRef.current,
+      photoRef.current,
+      badgeRef.current,
+      floatLabelRef.current,
+      scrollRef.current,
+    ].filter(Boolean) as HTMLElement[];
 
-        const elements = [
-          taglineRef.current,
-          headingRef.current,
-          descRef.current,
-          ctaRef.current,
-          photoRef.current,
-          badgeRef.current,
-          floatLabelRef.current,
-          scrollRef.current,
-        ].filter(Boolean);
+    // Set initial hidden state
+    gsap.set(els, { opacity: 0, y: 30 });
+    gsap.set(photoRef.current, { opacity: 0, scale: 0.92 });
+    gsap.set(badgeRef.current, { opacity: 0, scale: 0.8, y: 10 });
+    gsap.set(floatLabelRef.current, { opacity: 0, x: -15 });
 
-        // Set initial hidden state
-        gsap.set(elements, { opacity: 0, y: 30 });
-        if (photoRef.current) {
-          gsap.set(photoRef.current, { opacity: 0, scale: 0.9 });
-        }
-        if (badgeRef.current) {
-          gsap.set(badgeRef.current, { opacity: 0, scale: 0.8 });
-        }
-        if (floatLabelRef.current) {
-          gsap.set(floatLabelRef.current, { opacity: 0, x: -10 });
-        }
+    // Create timeline
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    tl.to(taglineRef.current, { opacity: 1, y: 0, duration: 0.5, delay: 0.1 })
+      .to(headingRef.current, { opacity: 1, y: 0, duration: 0.6 }, '-=0.2')
+      .to(descRef.current, { opacity: 1, y: 0, duration: 0.5 }, '-=0.2')
+      .to(ctaRef.current, { opacity: 1, y: 0, duration: 0.4 }, '-=0.15')
+      .to(photoRef.current, { opacity: 1, scale: 1, duration: 0.7 }, '-=0.5')
+      .to(badgeRef.current, { opacity: 1, scale: 1, y: 0, duration: 0.4 }, '-=0.2')
+      .to(floatLabelRef.current, { opacity: 1, x: 0, duration: 0.4 }, '-=0.2')
+      .to(scrollRef.current, { opacity: 1, duration: 0.5 }, '-=0.1');
 
-        tl.to(taglineRef.current, { opacity: 1, y: 0, duration: 0.6 })
-          .to(headingRef.current, { opacity: 1, y: 0, duration: 0.7 }, '-=0.3')
-          .to(descRef.current, { opacity: 1, y: 0, duration: 0.6 }, '-=0.3')
-          .to(ctaRef.current, { opacity: 1, y: 0, duration: 0.5 }, '-=0.2')
-          .to(
-            photoRef.current,
-            { opacity: 1, scale: 1, y: 0, duration: 0.8 },
-            '-=0.6'
-          )
-          .to(
-            badgeRef.current,
-            { opacity: 1, scale: 1, y: 0, duration: 0.5 },
-            '-=0.3'
-          )
-          .to(
-            floatLabelRef.current,
-            { opacity: 1, x: 0, duration: 0.4 },
-            '-=0.2'
-          )
-          .to(scrollRef.current, { opacity: 1, duration: 0.6 }, '-=0.1');
-      } catch {
-        // GSAP not available — elements stay visible (no animation)
-      }
+    return () => {
+      tl.kill();
     };
-
-    loadAndAnimate();
   }, []);
 
   return (

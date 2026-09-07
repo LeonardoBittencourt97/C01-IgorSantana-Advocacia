@@ -1,6 +1,12 @@
 'use client';
 
 import { useRef, useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 interface AnimatedCounterProps {
   target: number;
@@ -25,43 +31,36 @@ export default function AnimatedCounter({
     const countEl = countRef.current;
     if (!el || !countEl) return;
 
-    const loadAndAnimate = async () => {
-      try {
-        const gsapModule = await import('gsap');
-        const gsap = gsapModule.default;
-        const { ScrollTrigger } = await import('gsap/ScrollTrigger');
-        gsap.registerPlugin(ScrollTrigger);
+    const prefersReduced = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+    if (prefersReduced) {
+      countEl.textContent = `${prefix}${target}${suffix}`;
+      return;
+    }
 
-        const prefersReduced = window.matchMedia(
-          '(prefers-reduced-motion: reduce)'
-        ).matches;
-        if (prefersReduced) {
-          countEl.textContent = `${prefix}${target}${suffix}`;
-          return;
-        }
+    const obj = { value: 0 };
 
-        const obj = { value: 0 };
+    const tween = gsap.to(obj, {
+      value: target,
+      duration,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 85%',
+        once: true,
+      },
+      onUpdate: () => {
+        countEl.textContent = `${prefix}${Math.round(obj.value)}${suffix}`;
+      },
+    });
 
-        gsap.to(obj, {
-          value: target,
-          duration,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 80%',
-            once: true,
-          },
-          onUpdate: () => {
-            countEl.textContent = `${prefix}${Math.round(obj.value)}${suffix}`;
-          },
-        });
-      } catch {
-        // GSAP not available — show final value
-        countEl.textContent = `${prefix}${target}${suffix}`;
-      }
+    return () => {
+      tween.kill();
+      ScrollTrigger.getAll().forEach((t) => {
+        if (t.trigger === el) t.kill();
+      });
     };
-
-    loadAndAnimate();
   }, [target, suffix, prefix, duration]);
 
   return (
