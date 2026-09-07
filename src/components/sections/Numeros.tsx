@@ -1,47 +1,39 @@
-"use client";
+'use client';
 
-import { METRICS } from "@/lib/constants";
-import AnimatedCounter from "@/components/ui/AnimatedCounter";
-import ScrollReveal from "@/components/ui/ScrollReveal";
+import { metrics } from '@/lib/constants';
+import ScrollReveal from '@/components/ui/ScrollReveal';
+import AnimatedCounter from '@/components/ui/AnimatedCounter';
 
 export default function Numeros() {
   return (
-    <section className="relative bg-[var(--color-bg-elevated)] py-24 lg:py-32">
-      {/* Top divider */}
-      <div className="divider-gold absolute left-0 right-0 top-0" />
+    <section className="relative bg-bg-elevated py-24">
+      <div className="divider-gold" />
 
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-16 text-center">
-          <ScrollReveal>
-            <span className="mb-4 inline-block font-sans text-sm font-medium uppercase tracking-[0.2em] text-[var(--color-gold)]">
-              Nossos Números
-            </span>
-          </ScrollReveal>
-          <ScrollReveal delay={0.1}>
-            <h2 className="mt-4 font-serif text-4xl font-bold text-[var(--color-text-primary)] sm:text-5xl">
-              Resultados Que Falam por Si
-            </h2>
-          </ScrollReveal>
-        </div>
+      <div className="mx-auto max-w-7xl px-6 py-16">
+        <ScrollReveal className="text-center mb-16 space-y-4">
+          <p className="font-sans text-gold text-sm font-semibold uppercase tracking-[0.2em]">
+            Nossos Números
+          </p>
+          <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary">
+            Resultados Que Falam por Si
+          </h2>
+        </ScrollReveal>
 
-        {/* Metrics row */}
-        <div className="grid gap-12 sm:grid-cols-3">
-          {METRICS.map((metric, index) => (
-            <ScrollReveal key={metric.label} delay={0.2 + index * 0.15}>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-12">
+          {metrics.map((m, i) => (
+            <ScrollReveal key={m.label} delay={i * 0.15}>
               <AnimatedCounter
-                target={metric.value}
-                suffix={metric.suffix}
-                prefix={metric.prefix}
-                label={metric.label}
+                target={m.value}
+                suffix={m.suffix}
+                prefix={m.prefix}
+                label={m.label}
               />
             </ScrollReveal>
           ))}
         </div>
       </div>
 
-      {/* Bottom divider */}
-      <div className="divider-gold absolute bottom-0 left-0 right-0" />
+      <div className="divider-gold" />
     </section>
   );
 }

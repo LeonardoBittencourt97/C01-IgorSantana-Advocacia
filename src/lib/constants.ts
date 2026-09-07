@@ -1,5 +1,5 @@
 // ─── Informações da Empresa ──────────────────────────
-export const COMPANY = {
+export const company = {
   name: "Igor Santana Advocacia",
   shortName: "Igor Santana",
   tagline: "Advocacia Trabalhista",
@@ -9,10 +9,11 @@ export const COMPANY = {
     "Advogado, sócio-proprietário do escritório Igor Santana Advocacia, com atuação voltada ao Direito do Trabalho. Membro Relator da Comissão do Pacto Global e Sustentabilidade da OAB/PR, contribuindo com pautas voltadas ao trabalho decente e ao crescimento econômico sustentável.",
   oab: "OAB/PR 128.723",
   phone: "(41) 3262-7377",
-  phoneFormatted: "+554132627377",
+  phoneWa: "+554132627377",
   whatsappMessage:
     "Olá! Vim pelo site e gostaria de mais informações sobre seus serviços.",
-  email: "", // PENDENTE - cliente não informou
+  email: "",
+  domain: "https://igorsantana-advocacia.vercel.app",
   address: {
     street: "Rua Pedro Gusso, 4127",
     complement: "Sala 6",
@@ -28,37 +29,69 @@ export const COMPANY = {
   mapsRoutesUrl:
     "https://www.google.com/maps/dir//R.+Pedro+Gusso,+4127+-+Sl+6+-+Cidade+Industrial+de+Curitiba,+Curitiba+-+PR,+81315-000",
   coordinates: { lat: -25.4531, lng: -49.3182 },
+  social: {
+    instagram: "https://www.instagram.com/igorsantanaadv/",
+    facebook:
+      "https://www.facebook.com/p/Igor-Santana-Advocacia-Trabalhista-61574651908384/",
+    linkedin: "https://www.linkedin.com/in/igor-santana-adv/",
+  },
 } as const;
 
-// ─── Redes Sociais ──────────────────────────────────
-export const SOCIALS = [
-  {
-    name: "Instagram",
-    url: "https://www.instagram.com/igorsantanaadv/",
-    icon: "instagram" as const,
-  },
-  {
-    name: "Facebook",
-    url: "https://www.facebook.com/p/Igor-Santana-Advocacia-Trabalhista-61574651908384/",
-    icon: "facebook" as const,
-  },
-  {
-    name: "LinkedIn",
-    url: "https://www.linkedin.com/in/igor-santana-adv/",
-    icon: "linkedin" as const,
-  },
-] as const;
+// ─── Cores ──────────────────────────────────────────
+export const colors = {
+  background: "#060608",
+  card: "#0c0c10",
+  border: "#1e1e24",
+  textPrimary: "#f0ece4",
+  textSecondary: "#9a9590",
+  gold: "#c8a44e",
+  goldLight: "#d4b76a",
+  goldDark: "#a88a3a",
+} as const;
+
+// ─── SEO ────────────────────────────────────────────
+export const seo = {
+  titleTemplate: "%s | Igor Santana Advocacia",
+  defaultTitle:
+    "Igor Santana Advocacia | Advogado Trabalhista em Curitiba",
+  defaultDescription:
+    "Advogado trabalhista em Curitiba com +120 avaliações 5 estrelas. Atuação em todo o Brasil. Acidente de trabalho, vínculo empregatício, estabilidade e mais.",
+  keywords: [
+    "advogado trabalhista curitiba",
+    "advogado trabalhista",
+    "direito do trabalho",
+    "reclamação trabalhista",
+    "acidente de trabalho",
+    "vínculo empregatício",
+    "estabilidade no emprego",
+    "advogado curitiba",
+    "igor santana advogado",
+    "oab pr",
+  ],
+  ogImage: "/images/og-image.png",
+  url: "https://igorsantana-advocacia.vercel.app",
+} as const;
 
 // ─── Navegação ──────────────────────────────────────
-export const NAV_ITEMS = [
+export const navLinks = [
   { label: "Início", href: "/" },
   { label: "Sobre", href: "/sobre" },
   { label: "Áreas de Atuação", href: "/areas-de-atuacao" },
+  { label: "Blog", href: "/blog" },
   { label: "Contato", href: "/contato" },
 ] as const;
 
 // ─── Áreas de Atuação ───────────────────────────────
-export const SERVICES = [
+export type Service = {
+  slug: string;
+  title: string;
+  shortTitle: string;
+  description: string;
+  features: readonly string[];
+  icon: string;
+};
+
+export const services: Service[] = [
   {
     slug: "acidente-de-trabalho",
     title: "Acidente de Trabalho",
@@ -115,7 +148,7 @@ export const SERVICES = [
       "Adicional noturno (22h às 5h)",
       "Adicional de periculosidade e insalubridade",
       "DSR e descanso semanal remunerado",
-      " vale-transporte e vale-refeição",
+      "Vale-transporte e vale-refeição",
     ],
     icon: "Clock",
   },
@@ -152,14 +185,20 @@ export const SERVICES = [
 ] as const;
 
 // ─── Números / Métricas ─────────────────────────────
-export const METRICS = [
+export const metrics = [
   { value: 120, suffix: "+", label: "Avaliações 5 Estrelas", prefix: "" },
   { value: 100, suffix: "+", label: "Clientes Atendidos em 2025", prefix: "" },
   { value: 100, suffix: "%", label: "Dedicação e Compromisso", prefix: "" },
 ] as const;
 
 // ─── Depoimentos (reais do Google) ──────────────────
-export const TESTIMONIALS = [
+export type Testimonial = {
+  name: string;
+  text: string;
+  rating: number;
+};
+
+export const testimonials: Testimonial[] = [
   {
     name: "Augusto Cezar Pereira de Souza",
     text: "Excelente profissional, suporte total para o cliente com esclarecimentos das estratégias do processo. Super recomendável.",
@@ -190,10 +229,10 @@ export const TESTIMONIALS = [
     text: "Muito satisfeita com o resultado, ótimo suporte e atendimento, processo extremamente rápido e sem estresse. Recomendo de olhos fechados!",
     rating: 5,
   },
-] as const;
+];
 
 // ─── Experiência Profissional ───────────────────────
-export const EXPERIENCE = [
+export const experience = [
   {
     role: "Advogado — Sócio-Proprietário",
     company: "Igor Santana Advocacia",
@@ -229,7 +268,7 @@ export const EXPERIENCE = [
 ] as const;
 
 // ─── Formação Acadêmica ─────────────────────────────
-export const EDUCATION = {
+export const education = {
   degree: "Bacharel em Direito",
   institution: "Centro de Ensino Superior de Maringá (CESUMAR)",
   highlights: [
@@ -240,43 +279,186 @@ export const EDUCATION = {
 } as const;
 
 // ─── Comissão OAB/PR ────────────────────────────────
-export const OAB_COMMISSION = {
-  title: "Membro Relator da Comissão do Pacto Global e Sustentabilidade da OAB/PR",
+export const oabCommission = {
+  title:
+    "Membro Relator da Comissão do Pacto Global e Sustentabilidade da OAB/PR",
   description:
     "Contribuindo com pautas voltadas ao trabalho decente e ao crescimento econômico sustentável, alinhando a atuação jurídica aos princípios do desenvolvimento responsável.",
 };
 
-// ─── SEO ────────────────────────────────────────────
-export const SEO = {
-  title: "Igor Santana Advocacia | Advogado Trabalhista em Curitiba",
-  description:
-    "Advogado trabalhista em Curitiba com +120 avaliações 5 estrelas. Atuação em todo o Brasil. Acidente de trabalho, vínculo empregatício, estabilidade e mais.",
-  keywords: [
-    "advogado trabalhista curitiba",
-    "advogado trabalhista",
-    "direito do trabalho",
-    "reclamação trabalhista",
-    "acidente de trabalho",
-    "vínculo empregatício",
-    "estabilidade no emprego",
-    "advogado curitiba",
-    "igor santana advogado",
-    "oab pr",
-  ],
-  url: "https://igorsantanaadv.com.br",
-  ogImage: "/images/og-image.png",
+// ─── Blog Posts ─────────────────────────────────────
+export type BlogPost = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  date: string;
+  readTime: string;
+  category: string;
 };
 
+export const blogPosts: BlogPost[] = [
+  {
+    slug: "quando-entrar-com-reclamacao-trabalhista",
+    title: "Quando o Trabalhador Pode Entrar com Reclamação Trabalhista",
+    excerpt:
+      "Entenda em quais situações você tem direito de ingressar com uma reclamação trabalhista e quais os prazos importantes.",
+    content: `A reclamação trabalhista é o principal instrumento do trabalhador para garantir seus direitos na Justiça do Trabalho. Mas quando é possível entrar com uma ação trabalhista?
+
+## Situações que justificam uma reclamação trabalhista
+
+Existem diversas situações em que o trabalhador pode buscar a Justiça do Trabalho:
+
+### 1. Verbas rescisórias não pagas
+Quando o empregador não paga corretamente as verbas rescisórias após a demissão, como aviso prévio, saldo de salário, férias proporcionais e 13º proporcional.
+
+### 2. Horas extras não compensadas
+Se você trabalhou horas extras sem receber o adicional de 50% (ou o percentual previsto na convenção coletiva), tem direito a cobrar judicialmente.
+
+### 3. FGTS e multa de 40%
+O não recolhimento do FGTS ou a ausência da multa de 40% na demissão sem justa causa são motivos claros para ação.
+
+### 4. Assédio moral ou sexual
+Situações de humilhação, constrangimento ou assédio no ambiente de trabalho também podem ser objeto de reclamação trabalhista.
+
+### 5. Acidente de trabalho
+Quando o trabalhador sofre um acidente e não recebe os benefícios devidos, como estabilidade acidentária ou indenização.
+
+## Prazos importantes
+
+- **2 anos** após a saída da empresa para ações principais
+- **5 anos** durante o contrato de trabalho (prescrição quinquenal)
+- **Até 12 meses** após o término do contrato paraFGTS
+
+## Como começar
+
+O primeiro passo é reunir documentos como cartão de ponto, holerites, contrato de trabalho e comprovantes de depósito do FGTS. Com esses documentos, um advogado trabalhista poderá analisar seu caso e orientar sobre a melhor estratégia.
+
+**Precisa de orientação?** Entre em contato para uma avaliação do seu caso.`,
+    date: "01/09/2026",
+    readTime: "5 min",
+    category: "Direito Trabalhista",
+  },
+  {
+    slug: "estabilidade-acidentaria-o-que-voce-precisa-saber",
+    title: "Estabilidade Acidentária: O Que Você Precisa Saber",
+    excerpt:
+      "Saiba o que é a estabilidade acidentária, quem tem direito e como garantir seus direitos após um acidente de trabalho.",
+    content: `A estabilidade acidentária é um dos direitos mais importantes do trabalhador que sofre um acidente de trabalho. Vamos esclarecer as principais dúvidas sobre esse tema.
+
+## O que é a estabilidade acidentária?
+
+A estabilidade acidentária é o direito do trabalhador acidentado de não ser demitido sem justa causa pelo período de **12 meses** após o retorno ao trabalho, conforme o art. 118 da Lei 8.213/91.
+
+## Quem tem direito?
+
+Tem direito à estabilidade acidentária:
+- Trabalhadores que sofreram acidente de trabalho ou doença ocupacional
+- Trabalhadores que receberam auxílio-doença previdenciário (B31)
+- O período de 12 meses conta a partir da alta médica ou do retorno ao trabalho
+
+## O que fazer se for demitido?
+
+Se você foi demitido sem justa causa durante o período de estabilidade, tem direito à **reintegração** ou, se não for possível, à **indenização** correspondente ao período restante de estabilidade.
+
+## Documentos importantes
+
+- CAT (Comunicação de Acidente de Trabalho)
+- Laudos médicos
+- Atestados de retorno ao trabalho
+- Comunicação de afastamento
+
+## Prazo para ação
+
+O trabalhador tem até **2 anos** após a demissão para ingressar com reclamação trabalhista pleiteando seus direitos.
+
+**Foi demitido estando estável?** Consulte um advogado trabalhista para avaliar seu caso.`,
+    date: "25/08/2026",
+    readTime: "4 min",
+    category: "Direito Trabalhista",
+  },
+  {
+    slug: "demissao-sem-justa-causa-seus-direitos",
+    title: "Demissão sem Justa Causa: Conheça Todos os Seus Direitos",
+    excerpt:
+      "Lista completa de direitos do trabalhador demitido sem justa causa, desde verbas rescisórias até seguro-desemprego.",
+    content: `Ser demitido sem justa causa é uma situação difícil, mas é importante conhecer todos os seus direitos para garantir que sejam respeitados.
+
+## Direitos na demissão sem justa causa
+
+### 1. Aviso prévio
+O aviso prévio pode ser trabalhado ou indenizado. O período é de **30 dias + 3 dias por ano de trabalho**, limitado a 90 dias.
+
+### 2. Saldo de salário
+O pagamento dos dias trabalhados no mês da demissão que ainda não foram pagos.
+
+### 3. Férias proporcionais + 1/3
+As férias que você acumulou no ano da demissão, acrescidas do terço constitucional.
+
+### 4. 13º salário proporcional
+A parcela do 13º salário correspondente aos meses trabalhados no ano.
+
+### 5. Multa de 40% sobre o FGTS
+O empregador deve depositar a multa de 40% sobre o saldo da conta do FGTS.
+
+### 6. Saque do FGTS
+O trabalhador demitido sem justa causa tem direito a sacar todo o saldo da conta do FGTS.
+
+### 7. Seguro-desemprego
+Benefício temporário pago ao trabalhador demitido sem justa causa, por 3 a 5 parcelas, dependendo do tempo de trabalho.
+
+## Como calcular suas verbas
+
+É importante verificar se todas as verbas estão corretas. Erros comuns incluem:
+- Cálculo incorreto do aviso prévio
+- Não pagamento das férias proporcionais
+- FGTS sem a multa de 40%
+
+## O que fazer se seus direitos não foram respeitados?
+
+Se você identificou que algum direito não foi respeitado, consulte um advogado trabalhista. O prazo para ingressar com reclamação trabalhista é de **2 anos** após a demissão.
+
+**Precisa de ajuda?** Entre em contato para uma avaliação do seu caso.`,
+    date: "18/08/2026",
+    readTime: "6 min",
+    category: "Direito Trabalhista",
+  },
+];
+
 // ─── Linktree ───────────────────────────────────────
-export const LINKTREE = {
+export const linktree = {
   title: "Igor Santana Advocacia",
   subtitle: "Advogado Trabalhista | OAB/PR 128.723",
   links: [
-    { label: "Site Oficial", url: "https://igorsantana-advocacia.vercel.app", icon: "globe" as const },
-    { label: "WhatsApp", url: `https://wa.me/${COMPANY.phoneFormatted}?text=${encodeURIComponent(COMPANY.whatsappMessage)}`, icon: "whatsapp" as const },
-    { label: "Instagram", url: SOCIALS[0].url, icon: "instagram" as const },
-    { label: "Facebook", url: SOCIALS[1].url, icon: "facebook" as const },
-    { label: "LinkedIn", url: SOCIALS[2].url, icon: "linkedin" as const },
-    { label: "Localização", url: COMPANY.mapsRoutesUrl, icon: "mapPin" as const },
+    {
+      label: "Site Oficial",
+      url: "https://igorsantana-advocacia.vercel.app",
+      icon: "globe" as const,
+    },
+    {
+      label: "WhatsApp",
+      url: `https://wa.me/${company.phoneWa}?text=${encodeURIComponent(company.whatsappMessage)}`,
+      icon: "whatsapp" as const,
+    },
+    {
+      label: "Instagram",
+      url: company.social.instagram,
+      icon: "instagram" as const,
+    },
+    {
+      label: "Facebook",
+      url: company.social.facebook,
+      icon: "facebook" as const,
+    },
+    {
+      label: "LinkedIn",
+      url: company.social.linkedin,
+      icon: "linkedin" as const,
+    },
+    {
+      label: "Localização",
+      url: company.mapsRoutesUrl,
+      icon: "mapPin" as const,
+    },
   ],
 } as const;

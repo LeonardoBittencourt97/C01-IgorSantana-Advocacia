@@ -1,7 +1,10 @@
-"use client";
+'use client';
 
-import { useEffect, useState, useRef } from "react";
-import { motion, useInView, useSpring, useMotionValue } from "framer-motion";
+import { useRef, useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface AnimatedCounterProps {
   target: number;
@@ -13,53 +16,56 @@ interface AnimatedCounterProps {
 
 export default function AnimatedCounter({
   target,
-  suffix = "",
-  prefix = "",
+  suffix = '',
+  prefix = '',
   label,
   duration = 2,
 }: AnimatedCounterProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
-  const [hasAnimated, setHasAnimated] = useState(false);
-  const motionValue = useMotionValue(0);
-  const springValue = useSpring(motionValue, {
-    damping: 40,
-    stiffness: 100,
-    duration,
-  });
-  const [displayValue, setDisplayValue] = useState(0);
+  const countRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    if (isInView && !hasAnimated) {
-      setHasAnimated(true);
-      motionValue.set(target);
+    const el = ref.current;
+    const countEl = countRef.current;
+    if (!el || !countEl) return;
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) {
+      countEl.textContent = `${prefix}${target}${suffix}`;
+      return;
     }
-  }, [isInView, hasAnimated, target, motionValue]);
 
-  useEffect(() => {
-    const unsubscribe = springValue.on("change", (latest) => {
-      setDisplayValue(Math.round(latest));
+    const obj = { value: 0 };
+
+    gsap.to(obj, {
+      value: target,
+      duration,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 80%',
+        once: true,
+      },
+      onUpdate: () => {
+        countEl.textContent = `${prefix}${Math.round(obj.value)}${suffix}`;
+      },
     });
-    return () => unsubscribe();
-  }, [springValue]);
+
+    return () => {
+      ScrollTrigger.getAll().forEach((t) => {
+        if (t.trigger === el) t.kill();
+      });
+    };
+  }, [target, suffix, prefix, duration]);
 
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="text-center"
-    >
-      <span className="block font-serif text-5xl font-bold text-[#c8a44e] md:text-6xl lg:text-7xl">
-        {prefix}
-        {displayValue}
-        {suffix}
+    <div ref={ref} className="text-center">
+      <span ref={countRef} className="font-serif text-gold text-5xl md:text-6xl font-bold">
+        {prefix}0{suffix}
       </span>
-      <span className="mt-2 block font-sans text-sm text-white/60 uppercase tracking-wider md:text-base">
+      <p className="font-sans text-text-secondary mt-2 text-sm uppercase tracking-wider">
         {label}
-      </span>
-    </motion.div>
+      </p>
+    </div>
   );
 }

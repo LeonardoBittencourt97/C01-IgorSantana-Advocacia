@@ -5,6 +5,9 @@
 ## Sobre
 Dr. Igor Santana é advogado trabalhista, sócio-proprietário do escritório Igor Santana Advocacia. Membro Relator da Comissão do Pacto Global e Sustentabilidade da OAB/PR. Bacharel em Direito pelo CESUMAR.
 
+## Quando usar
+Use este site para encontrar informações sobre direitos trabalhistas, áreas de atuação do escritório, artigos sobre direito do trabalho, ou entrar em contato para uma consulta jurídica.
+
 ## Serviços
 - Acidente de trabalho e estabilidade acidentária
 - Reconhecimento de vínculo empregatício
@@ -13,6 +16,13 @@ Dr. Igor Santana é advogado trabalhista, sócio-proprietário do escritório Ig
 - Demissão sem justa causa e verbas rescisórias
 - Contratos de trabalho
 
+## Páginas
+- [/](/) - Página inicial com visão geral
+- [/sobre](/sobre) - Biografia e experiência do Dr. Igor Santana
+- [/areas-de-atuacao](/areas-de-atuacao) - Áreas de atuação detalhadas
+- [/blog](/blog) - Artigos sobre direito trabalhista
+- [/contato](/contato) - Formulário de contato e informações
+
 ## Localização
 Rua Pedro Gusso, 4127, Sala 6 - CIC, Curitiba/PR, 81315-000
 
@@ -20,7 +30,7 @@ Rua Pedro Gusso, 4127, Sala 6 - CIC, Curitiba/PR, 81315-000
 - Telefone: (41) 3262-7377
 - WhatsApp: +55 41 3262-7377
 
-## Rede
+## Redes Sociais
 - Instagram: https://www.instagram.com/igorsantanaadv/
 - Facebook: https://www.facebook.com/p/Igor-Santana-Advocacia-Trabalhista-61574651908384/
 - LinkedIn: https://www.linkedin.com/in/igor-santana-adv/

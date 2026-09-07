@@ -1,102 +1,78 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import {
-  Shield,
-  Link as LinkIcon,
-  Lock,
-  Clock,
-  UserX,
-  FileText,
-  type LucideIcon,
-} from "lucide-react";
-import { SERVICES } from "@/lib/constants";
-import ScrollReveal from "@/components/ui/ScrollReveal";
+import { Shield, Link as LucideLink, Lock, Clock, UserX, FileText, Check, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
+import { services } from '@/lib/constants';
+import ScrollReveal from '@/components/ui/ScrollReveal';
 
-const iconMap: Record<string, LucideIcon> = {
-  Shield,
-  Link: LinkIcon,
-  Lock,
-  Clock,
-  UserX,
-  FileText,
-};
+const iconMap = { Shield, Link: LucideLink, Lock, Clock, UserX, FileText } as const;
 
 export default function AreasAtuacao() {
+  const displayed = services.slice(0, 3);
+
   return (
-    <section className="relative bg-[var(--color-bg-card)] py-24 lg:py-32">
-      {/* Top divider */}
-      <div className="divider-gold absolute left-0 right-0 top-0" />
+    <section className="py-24 px-4">
+      <div className="max-w-6xl mx-auto">
+        <ScrollReveal>
+          <p className="text-sm uppercase tracking-widest text-[#c8a44e] mb-3 text-center font-medium">
+            Áreas de Atuação
+          </p>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#f0ece4] text-center mb-16">
+            Experiência que faz a diferença
+          </h2>
+        </ScrollReveal>
 
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-16 text-center">
-          <ScrollReveal>
-            <span className="mb-4 inline-block font-sans text-sm font-medium uppercase tracking-[0.2em] text-[var(--color-gold)]">
-              Especialidades
-            </span>
-          </ScrollReveal>
-          <ScrollReveal delay={0.1}>
-            <h2 className="mt-4 font-serif text-4xl font-bold text-[var(--color-text-primary)] sm:text-5xl">
-              Áreas de Atuação
-            </h2>
-          </ScrollReveal>
-          <ScrollReveal delay={0.2}>
-            <p className="mx-auto mt-6 max-w-2xl font-sans text-lg text-[var(--color-text-secondary)]">
-              Atuação completa em Direito do Trabalho, defendendo os direitos
-              de trabalhadores em todas as etapas do processo.
-            </p>
-          </ScrollReveal>
-        </div>
+        <div className="space-y-20">
+          {displayed.map((service, i) => {
+            const Icon = iconMap[service.icon as keyof typeof iconMap];
+            const reversed = i % 2 !== 0;
 
-        {/* Services grid */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {SERVICES.map((service, index) => {
-            const Icon = iconMap[service.icon] || Shield;
             return (
-              <ScrollReveal key={service.slug} delay={0.1 + index * 0.08}>
-                <Link
-                  href={`/areas-de-atuacao#${service.slug}`}
-                  className="group card-hover flex h-full flex-col gap-5 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-7 transition-all duration-300 hover:border-[var(--color-gold-dark)]/40 hover:shadow-[0_0_40px_rgba(200,164,78,0.06)]"
+              <ScrollReveal key={service.slug} delay={i * 0.1}>
+                <div
+                  className={`flex flex-col ${
+                    reversed ? 'md:flex-row-reverse' : 'md:flex-row'
+                  } items-center gap-10`}
                 >
-                  {/* Icon */}
-                  <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-[var(--color-gold-dark)]/20 bg-[var(--color-gold)]/5 transition-colors group-hover:border-[var(--color-gold)]/30 group-hover:bg-[var(--color-gold)]/10">
-                    <Icon className="h-6 w-6 text-[var(--color-gold)]" />
+                  {/* Icon block */}
+                  <div className="flex-shrink-0 w-44 h-44 rounded-2xl bg-[#0c0c10] border border-[#1e1e24] flex items-center justify-center">
+                    {Icon && <Icon className="w-16 h-16 text-[#c8a44e]" strokeWidth={1.5} />}
                   </div>
 
                   {/* Content */}
-                  <div className="flex flex-1 flex-col gap-3">
-                    <h3 className="font-serif text-xl font-semibold text-[var(--color-text-primary)] transition-colors group-hover:text-[var(--color-gold)]">
+                  <div className="flex-1 text-center md:text-left">
+                    <h3 className="text-2xl font-bold text-[#f0ece4] mb-3">
                       {service.title}
                     </h3>
-                    <p className="font-sans text-sm leading-relaxed text-[var(--color-text-secondary)]">
+                    <p className="text-[#9a9590] leading-relaxed mb-5">
                       {service.description}
                     </p>
+                    <ul className="space-y-2">
+                      {service.features.map((feat) => (
+                        <li
+                          key={feat}
+                          className="flex items-center gap-2 text-sm text-[#9a9590] justify-center md:justify-start"
+                        >
+                          <Check className="w-4 h-4 text-[#c8a44e] shrink-0" />
+                          {feat}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-
-                  {/* Arrow */}
-                  <div className="flex items-center gap-2 pt-2 font-sans text-xs font-medium uppercase tracking-wider text-[var(--color-text-muted)] transition-colors group-hover:text-[var(--color-gold)]">
-                    Saiba mais
-                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-                  </div>
-                </Link>
+                </div>
               </ScrollReveal>
             );
           })}
         </div>
 
-        {/* CTA */}
-        <ScrollReveal delay={0.6}>
-          <div className="mt-14 text-center">
-            <Link
-              href="/areas-de-atuacao"
-              className="inline-flex items-center gap-2 rounded-lg border border-[var(--color-gold-dark)]/30 bg-transparent px-8 py-3.5 font-sans text-sm font-semibold uppercase tracking-wider text-[var(--color-gold)] transition-all duration-300 hover:bg-[var(--color-gold)]/10 hover:border-[var(--color-gold)]"
-            >
-              Ver Todas as Áreas
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
+        <ScrollReveal className="text-center mt-16">
+          <Link
+            href="/areas-de-atuacao"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-[#c8a44e] text-[#c8a44e] hover:bg-[#c8a44e]/10 transition-colors font-medium"
+          >
+            Ver todas as áreas
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </ScrollReveal>
       </div>
     </section>

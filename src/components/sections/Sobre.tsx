@@ -1,124 +1,94 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import Image from "next/image";
-import { ArrowRight, Award, Briefcase, Scale } from "lucide-react";
-import { EXPERIENCE, OAB_COMMISSION } from "@/lib/constants";
-import ScrollReveal from "@/components/ui/ScrollReveal";
+import Image from 'next/image';
+import Link from 'next/link';
+import { Award } from 'lucide-react';
+import { company, experience, oabCommission } from '@/lib/constants';
+import ScrollReveal from '@/components/ui/ScrollReveal';
 
-const metrics = [
-  {
-    icon: Briefcase,
-    value: `${EXPERIENCE.length}+`,
-    label: "Experiências Profissionais",
-  },
-  {
-    icon: Scale,
-    value: "100%",
-    label: "Dedicação ao Direito Trabalhista",
-  },
-  {
-    icon: Award,
-    value: "OAB/PR",
-    label: OAB_COMMISSION.title.split("da ")[1]?.split(" da")[0] || "Comissão",
-  },
-];
+const metaMetrics = [
+  { value: '4+', label: 'Experiências' },
+  { value: '100%', label: 'Dedicação' },
+  { value: 'OAB/PR', label: 'Comissão' },
+] as const;
 
 export default function Sobre() {
   return (
-    <section className="relative bg-[var(--color-bg)] py-24 lg:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="grid items-center gap-16 lg:grid-cols-2">
-          {/* Left: Photo */}
-          <ScrollReveal direction="left">
-            <div className="relative mx-auto max-w-md lg:mx-0">
-              {/* Gold border frame */}
-              <div className="relative">
-                <div className="absolute -inset-3 rounded-2xl border border-[var(--color-gold-dark)]/30" />
-                <div className="absolute -inset-1 rounded-xl border border-[var(--color-gold)]/10" />
-                <div className="relative overflow-hidden rounded-xl bg-[var(--color-bg-card)]">
-                  <Image
-                    src="/images/igor-foto.jpg"
-                    alt="Dr. Igor Santana — Advogado Trabalhista"
-                    width={500}
-                    height={600}
-                    className="h-auto w-full object-cover"
-                    priority
-                  />
-                  {/* Subtle overlay gradient */}
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[var(--color-bg)]/40 to-transparent" />
-                </div>
-              </div>
+    <section className="relative bg-bg py-24">
+      <div className="mx-auto max-w-7xl px-6 grid lg:grid-cols-2 gap-16 items-center">
+        {/* Photo */}
+        <ScrollReveal direction="left" className="relative mx-auto lg:mx-0">
+          <div className="relative w-80 h-96 md:w-96 md:h-[28rem] rounded-2xl overflow-hidden border-2 border-gold/30 shadow-[0_0_60px_rgba(200,164,78,0.12)]">
+            <Image
+              src="/images/igor-foto.jpg"
+              alt="Dr. Igor Santana"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 320px, 384px"
+              priority
+            />
+          </div>
+          {/* OAB badge */}
+          <div className="absolute -bottom-3 -right-3 flex items-center gap-2 rounded-lg bg-bg-card border border-gold/30 px-4 py-2 shadow-lg">
+            <Award className="w-5 h-5 text-gold" />
+            <span className="font-sans text-xs font-semibold text-gold">{company.oab}</span>
+          </div>
+        </ScrollReveal>
 
-              {/* Floating badge */}
-              <div className="absolute -bottom-6 -right-4 rounded-lg border border-[var(--color-gold-dark)]/30 bg-[var(--color-bg-card)] px-5 py-3 shadow-lg lg:-right-8">
-                <span className="font-serif text-sm font-semibold text-[var(--color-gold)]">
-                  OAB/PR 128.723
-                </span>
-              </div>
+        {/* Text */}
+        <div className="space-y-6">
+          <ScrollReveal>
+            <p className="font-sans text-gold text-sm font-semibold uppercase tracking-[0.2em]">
+              Sobre o Advogado
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.1}>
+            <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary">
+              Dr. Igor Santana
+            </h2>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.2}>
+            <p className="font-sans text-text-secondary leading-relaxed">
+              {company.longDescription}
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.3}>
+            <div className="rounded-xl border border-border bg-bg-card p-5 space-y-2">
+              <h3 className="font-sans text-sm font-semibold text-gold uppercase tracking-wider">
+                {oabCommission.title}
+              </h3>
+              <p className="font-sans text-text-secondary text-sm leading-relaxed">
+                {oabCommission.description}
+              </p>
             </div>
           </ScrollReveal>
 
-          {/* Right: Text content */}
-          <div className="flex flex-col gap-8">
-            <ScrollReveal direction="right" delay={0.1}>
-              <span className="inline-block font-sans text-sm font-medium uppercase tracking-[0.2em] text-[var(--color-gold)]">
-                Sobre o Advogado
-              </span>
-            </ScrollReveal>
+          {/* Metrics */}
+          <ScrollReveal delay={0.4}>
+            <div className="grid grid-cols-3 gap-4 pt-4">
+              {metaMetrics.map((m) => (
+                <div key={m.label} className="text-center space-y-1">
+                  <p className="font-serif text-2xl font-bold text-gold">{m.value}</p>
+                  <p className="font-sans text-xs text-text-secondary uppercase tracking-wider">{m.label}</p>
+                </div>
+              ))}
+            </div>
+          </ScrollReveal>
 
-            <ScrollReveal direction="up" delay={0.2}>
-              <h2 className="font-serif text-4xl font-bold text-[var(--color-text-primary)] sm:text-5xl">
-                Dr. Igor Santana
-              </h2>
-            </ScrollReveal>
-
-            <ScrollReveal direction="up" delay={0.3}>
-              <div className="flex flex-col gap-5 text-[var(--color-text-secondary)]">
-                <p className="font-sans text-lg leading-relaxed">
-                  Advogado, sócio-proprietário do escritório Igor Santana
-                  Advocacia, com atuação voltada ao{" "}
-                  <span className="font-semibold text-[var(--color-text-primary)]">
-                    Direito do Trabalho
-                  </span>
-                  .
-                </p>
-                <p className="font-sans text-lg leading-relaxed">
-                  {OAB_COMMISSION.description}
-                </p>
-              </div>
-            </ScrollReveal>
-
-            {/* Metrics row */}
-            <ScrollReveal direction="up" delay={0.4}>
-              <div className="grid grid-cols-3 gap-4 pt-4">
-                {metrics.map((metric) => (
-                  <div
-                    key={metric.label}
-                    className="flex flex-col items-center gap-2 rounded-lg border border-[var(--color-border-subtle)] bg-[var(--color-bg-card)] p-4 text-center"
-                  >
-                    <metric.icon className="h-5 w-5 text-[var(--color-gold)]" />
-                    <span className="font-serif text-xl font-bold text-[var(--color-text-primary)] sm:text-2xl">
-                      {metric.value}
-                    </span>
-                    <span className="font-sans text-xs text-[var(--color-text-muted)]">
-                      {metric.label}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal direction="up" delay={0.5}>
-              <Link
-                href="/sobre"
-                className="group inline-flex items-center gap-2 font-sans text-sm font-medium text-[var(--color-gold)] transition-colors hover:text-[var(--color-gold-light)]"
-              >
-                Conheça minha trajetória completa
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </ScrollReveal>
-          </div>
+          <ScrollReveal delay={0.5}>
+            <Link
+              href="/sobre"
+              className="inline-flex items-center gap-2 font-sans text-sm font-semibold text-gold hover:text-gold-light transition-colors mt-2"
+            >
+              Conheça minha trajetória completa
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </ScrollReveal>
         </div>
       </div>
     </section>

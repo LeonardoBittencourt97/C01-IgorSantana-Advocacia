@@ -1,0 +1,21 @@
+{
+  "name": "Igor Santana Advocacia",
+  "short_name": "Igor Santana",
+  "description": "Advogado trabalhista em Curitiba - Acidente de trabalho, vínculo empregatício, estabilidade e mais.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#060608",
+  "theme_color": "#060608",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

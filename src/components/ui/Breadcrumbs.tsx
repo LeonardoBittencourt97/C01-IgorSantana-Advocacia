@@ -1,7 +1,4 @@
-"use client";
-
-import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+'use client';
 
 interface BreadcrumbItem {
   label: string;
@@ -14,13 +11,13 @@ interface BreadcrumbsProps {
 
 export default function Breadcrumbs({ items }: BreadcrumbsProps) {
   const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: items.map((item, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
       name: item.label,
-      ...(item.href ? { item: `${typeof window !== "undefined" ? window.location.origin : ""}${item.href}` } : {}),
+      ...(item.href ? { item: item.href } : {}),
     })),
   };
 
@@ -30,28 +27,27 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-sm">
-        {items.map((item, index) => {
-          const isLast = index === items.length - 1;
+      <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm">
+        {items.map((item, i) => {
+          const isLast = i === items.length - 1;
           return (
-            <span key={index} className="flex items-center gap-1">
-              {index > 0 && (
-                <ChevronRight className="h-3.5 w-3.5 text-white/30" />
+            <span key={i} className="flex items-center gap-2">
+              {i > 0 && (
+                <svg className="w-3 h-3 text-text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
               )}
-              {isLast || !item.href ? (
-                <span
-                  className="font-sans text-[#c8a44e]"
-                  aria-current="page"
-                >
+              {isLast ? (
+                <span className="text-gold" aria-current="page">
                   {item.label}
                 </span>
               ) : (
-                <Link
-                  href={item.href}
-                  className="font-sans text-white/60 transition-colors hover:text-white"
+                <a
+                  href={item.href || '#'}
+                  className="text-text-secondary hover:text-white transition-colors"
                 >
                   {item.label}
-                </Link>
+                </a>
               )}
             </span>
           );

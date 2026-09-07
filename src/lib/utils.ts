@@ -13,7 +13,3 @@ export function escapeHtml(str: string): string {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
-
-export function formatPhoneBR(phone: string): string {
-  return phone.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
-}

@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /links
+Disallow: /api/
 
-Sitemap: https://igorsantanaadv.com.br/sitemap.xml
+Sitemap: https://igorsantana-advocacia.vercel.app/sitemap.xml

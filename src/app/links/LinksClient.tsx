@@ -1,10 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { ExternalLink } from "lucide-react";
-import { COMPANY, LINKTREE } from "@/lib/constants";
+import { company, linktree } from "@/lib/constants";
 
-// ─── SVG Icons para redes sociais ────────────────────
 function GlobeIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -56,7 +55,6 @@ function MapPinIcon({ className }: { className?: string }) {
   );
 }
 
-// ─── Mapa de ícones ──────────────────────────────────
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   globe: GlobeIcon,
   whatsapp: WhatsAppIcon,
@@ -66,7 +64,6 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   mapPin: MapPinIcon,
 };
 
-// ─── Cores dos ícones ────────────────────────────────
 const iconColors: Record<string, string> = {
   whatsapp: "text-[#25D366]",
   instagram: "text-[#E4405F]",
@@ -76,74 +73,57 @@ const iconColors: Record<string, string> = {
   mapPin: "text-gold",
 };
 
-// ─── Animation variants ──────────────────────────────
-const container = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08, delayChildren: 0.2 },
-  },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const },
-  },
-};
-
-// ─── Component ────────────────────────────────────────
 export default function LinksClient() {
+  const [visible, setVisible] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setVisible(true);
+  }, []);
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-bg px-6 py-12">
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="visible"
-        className="flex w-full max-w-md flex-col items-center"
+      <div
+        ref={containerRef}
+        className={`flex w-full max-w-md flex-col items-center transition-all duration-700 ${
+          visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+        }`}
       >
         {/* Profile */}
-        <motion.div variants={item} className="mb-8 text-center">
+        <div className="mb-8 text-center">
           <div className="glow-gold mx-auto mb-5 h-28 w-28 overflow-hidden rounded-full border-2 border-gold">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/images/logo.png"
-              alt={COMPANY.name}
+              alt={company.name}
               className="h-full w-full object-cover"
               width={112}
               height={112}
             />
           </div>
           <h1 className="mb-1 font-serif text-2xl font-semibold text-text-primary md:text-3xl">
-            {LINKTREE.title}
+            {linktree.title}
           </h1>
-          <p className="text-sm text-text-secondary">{LINKTREE.subtitle}</p>
-        </motion.div>
+          <p className="text-sm text-text-secondary">{linktree.subtitle}</p>
+        </div>
 
-        {/* Divider */}
-        <motion.div variants={item} className="divider-gold mb-8 w-full" />
+        <div className="divider-gold mb-8 w-full" />
 
         {/* Links */}
         <div className="w-full space-y-3">
-          {LINKTREE.links.map((link) => {
+          {linktree.links.map((link, index) => {
             const Icon = iconMap[link.icon] ?? GlobeIcon;
             const colorClass = iconColors[link.icon] ?? "text-gold";
 
             return (
-              <motion.a
+              <a
                 key={link.label}
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                variants={item}
-                whileHover={{
-                  scale: 1.03,
-                  boxShadow: "0 0 30px rgba(200,164,78,0.15)",
+                className="group flex w-full items-center gap-4 rounded-xl border border-gold/30 px-6 py-4 font-medium text-text-primary transition-all duration-300 hover:border-gold hover:bg-gold/5 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(200,164,78,0.15)]"
+                style={{
+                  transitionDelay: `${index * 80}ms`,
                 }}
-                whileTap={{ scale: 0.98 }}
-                className="group flex w-full items-center gap-4 rounded-xl border border-gold/30 px-6 py-4 font-medium text-text-primary transition-colors hover:border-gold hover:bg-gold/5"
               >
                 <Icon className={`h-5 w-5 shrink-0 ${colorClass}`} />
                 <span className="flex-1">{link.label}</span>
@@ -151,22 +131,17 @@ export default function LinksClient() {
                   size={16}
                   className="shrink-0 text-text-muted transition-colors group-hover:text-gold"
                 />
-              </motion.a>
+              </a>
             );
           })}
         </div>
 
-        {/* Divider */}
-        <motion.div variants={item} className="divider-gold mb-6 mt-8 w-full" />
+        <div className="divider-gold mb-6 mt-8 w-full" />
 
-        {/* Footer */}
-        <motion.p
-          variants={item}
-          className="text-center text-xs text-text-muted"
-        >
-          &copy; {new Date().getFullYear()} {COMPANY.name}
-        </motion.p>
-      </motion.div>
+        <p className="text-center text-xs text-text-muted">
+          &copy; {new Date().getFullYear()} {company.name}
+        </p>
+      </div>
     </div>
   );
 }

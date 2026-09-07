@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next";
-import { SEO } from "@/lib/constants";
+import { seo } from "@/lib/constants";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = SEO.url;
+  const baseUrl = seo.url;
 
   return [
     {
@@ -22,6 +22,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.7,
     },
     {
       url: `${baseUrl}/contato`,
