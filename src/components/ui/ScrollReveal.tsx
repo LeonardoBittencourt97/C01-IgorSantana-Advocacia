@@ -1,10 +1,6 @@
 'use client';
 
 import { useRef, useEffect, type ReactNode } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 interface ScrollRevealProps {
   children: ReactNode;
@@ -27,41 +23,52 @@ export default function ScrollReveal({
     const el = ref.current;
     if (!el) return;
 
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) {
-      gsap.set(el, { opacity: 1 });
-      return;
-    }
+    // Progressive enhancement: only animate if GSAP is available
+    const loadAndAnimate = async () => {
+      try {
+        const gsapModule = await import('gsap');
+        const gsap = gsapModule.default;
+        const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+        gsap.registerPlugin(ScrollTrigger);
 
-    const from = {
-      opacity: 0,
-      y: direction === 'up' ? 40 : 0,
-      x: direction === 'left' ? -40 : direction === 'right' ? 40 : 0,
+        const prefersReduced = window.matchMedia(
+          '(prefers-reduced-motion: reduce)'
+        ).matches;
+        if (prefersReduced) return;
+
+        const from = {
+          opacity: 0,
+          y: direction === 'up' ? 40 : 0,
+          x: direction === 'left' ? -40 : direction === 'right' ? 40 : 0,
+        };
+
+        gsap.fromTo(el, from, {
+          opacity: 1,
+          y: 0,
+          x: 0,
+          duration,
+          delay,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 85%',
+            once: true,
+          },
+        });
+      } catch {
+        // GSAP not available — element stays visible (no animation)
+      }
     };
 
-    gsap.fromTo(el, from, {
-      opacity: 1,
-      y: 0,
-      x: 0,
-      duration,
-      delay,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 85%',
-        once: true,
-      },
-    });
+    loadAndAnimate();
 
     return () => {
-      ScrollTrigger.getAll().forEach((t) => {
-        if (t.trigger === el) t.kill();
-      });
+      // Cleanup handled by GSAP's built-in cleanup
     };
   }, [delay, direction, duration]);
 
   return (
-    <div ref={ref} className={className} style={{ opacity: 0 }}>
+    <div ref={ref} className={className}>
       {children}
     </div>
   );

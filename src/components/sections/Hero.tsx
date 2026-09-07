@@ -4,11 +4,9 @@ import { useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Award, ChevronDown } from 'lucide-react';
-import gsap from 'gsap';
 import { company } from '@/lib/constants';
 
 export default function Hero() {
-  const sectionRef = useRef<HTMLElement>(null);
   const taglineRef = useRef<HTMLParagraphElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const descRef = useRef<HTMLParagraphElement>(null);
@@ -19,71 +17,71 @@ export default function Hero() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const prefersReduced = window.matchMedia(
-      '(prefers-reduced-motion: reduce)'
-    ).matches;
-    if (prefersReduced) return;
+    const loadAndAnimate = async () => {
+      try {
+        const gsapModule = await import('gsap');
+        const gsap = gsapModule.default;
 
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+        const prefersReduced = window.matchMedia(
+          '(prefers-reduced-motion: reduce)'
+        ).matches;
+        if (prefersReduced) return;
 
-    tl.fromTo(
-      taglineRef.current,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.6 }
-    )
-      .fromTo(
-        headingRef.current,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.7 },
-        '-=0.3'
-      )
-      .fromTo(
-        descRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6 },
-        '-=0.3'
-      )
-      .fromTo(
-        ctaRef.current,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.5 },
-        '-=0.2'
-      )
-      .fromTo(
-        photoRef.current,
-        { opacity: 0, scale: 0.9, y: 30 },
-        { opacity: 1, scale: 1, y: 0, duration: 0.8 },
-        '-=0.6'
-      )
-      .fromTo(
-        badgeRef.current,
-        { opacity: 0, scale: 0.8, y: 10 },
-        { opacity: 1, scale: 1, y: 0, duration: 0.5 },
-        '-=0.3'
-      )
-      .fromTo(
-        floatLabelRef.current,
-        { opacity: 0, x: -10 },
-        { opacity: 1, x: 0, duration: 0.4 },
-        '-=0.2'
-      )
-      .fromTo(
-        scrollRef.current,
-        { opacity: 0 },
-        { opacity: 1, duration: 0.6 },
-        '-=0.1'
-      );
+        const elements = [
+          taglineRef.current,
+          headingRef.current,
+          descRef.current,
+          ctaRef.current,
+          photoRef.current,
+          badgeRef.current,
+          floatLabelRef.current,
+          scrollRef.current,
+        ].filter(Boolean);
 
-    return () => {
-      tl.kill();
+        // Set initial hidden state
+        gsap.set(elements, { opacity: 0, y: 30 });
+        if (photoRef.current) {
+          gsap.set(photoRef.current, { opacity: 0, scale: 0.9 });
+        }
+        if (badgeRef.current) {
+          gsap.set(badgeRef.current, { opacity: 0, scale: 0.8 });
+        }
+        if (floatLabelRef.current) {
+          gsap.set(floatLabelRef.current, { opacity: 0, x: -10 });
+        }
+
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+        tl.to(taglineRef.current, { opacity: 1, y: 0, duration: 0.6 })
+          .to(headingRef.current, { opacity: 1, y: 0, duration: 0.7 }, '-=0.3')
+          .to(descRef.current, { opacity: 1, y: 0, duration: 0.6 }, '-=0.3')
+          .to(ctaRef.current, { opacity: 1, y: 0, duration: 0.5 }, '-=0.2')
+          .to(
+            photoRef.current,
+            { opacity: 1, scale: 1, y: 0, duration: 0.8 },
+            '-=0.6'
+          )
+          .to(
+            badgeRef.current,
+            { opacity: 1, scale: 1, y: 0, duration: 0.5 },
+            '-=0.3'
+          )
+          .to(
+            floatLabelRef.current,
+            { opacity: 1, x: 0, duration: 0.4 },
+            '-=0.2'
+          )
+          .to(scrollRef.current, { opacity: 1, duration: 0.6 }, '-=0.1');
+      } catch {
+        // GSAP not available — elements stay visible (no animation)
+      }
     };
+
+    loadAndAnimate();
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative min-h-screen flex items-center overflow-hidden bg-bg"
-    >
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-bg">
       {/* Background layers */}
       <div
         className="absolute inset-0 opacity-[0.03]"
@@ -107,14 +105,14 @@ export default function Hero() {
           <div className="space-y-6 order-2 lg:order-1">
             <p
               ref={taglineRef}
-              className="font-sans text-gold text-sm font-semibold uppercase tracking-[0.2em] opacity-0"
+              className="font-sans text-gold text-sm font-semibold uppercase tracking-[0.2em]"
             >
               {company.tagline}
             </p>
 
             <h1
               ref={headingRef}
-              className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] text-primary opacity-0"
+              className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] text-primary"
             >
               Advocacia
               <br />
@@ -123,12 +121,12 @@ export default function Hero() {
 
             <p
               ref={descRef}
-              className="font-sans text-text-secondary text-lg max-w-lg leading-relaxed opacity-0"
+              className="font-sans text-text-secondary text-lg max-w-lg leading-relaxed"
             >
               {company.description}
             </p>
 
-            <div ref={ctaRef} className="flex flex-wrap gap-4 opacity-0">
+            <div ref={ctaRef} className="flex flex-wrap gap-4">
               <Link
                 href={`https://wa.me/${company.phoneWa}?text=${encodeURIComponent(company.whatsappMessage)}`}
                 target="_blank"
@@ -155,7 +153,7 @@ export default function Hero() {
               {/* Photo */}
               <div
                 ref={photoRef}
-                className="relative w-72 h-80 md:w-80 md:h-96 lg:w-96 lg:h-[28rem] rounded-2xl overflow-hidden border-2 border-gold/30 shadow-[0_0_60px_rgba(200,164,78,0.12)] opacity-0"
+                className="relative w-72 h-80 md:w-80 md:h-96 lg:w-96 lg:h-[28rem] rounded-2xl overflow-hidden border-2 border-gold/30 shadow-[0_0_60px_rgba(200,164,78,0.12)]"
               >
                 <Image
                   src="/images/igor-foto.jpg"
@@ -165,14 +163,13 @@ export default function Hero() {
                   sizes="(max-width: 768px) 288px, (max-width: 1024px) 320px, 384px"
                   priority
                 />
-                {/* Subtle overlay gradient */}
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg/40 to-transparent" />
               </div>
 
               {/* OAB badge */}
               <div
                 ref={badgeRef}
-                className="absolute -bottom-3 -right-3 flex items-center gap-2 rounded-lg bg-bg-card border border-gold/30 px-4 py-2 shadow-lg opacity-0"
+                className="absolute -bottom-3 -right-3 flex items-center gap-2 rounded-lg bg-bg-card border border-gold/30 px-4 py-2 shadow-lg"
               >
                 <Award className="w-5 h-5 text-gold" />
                 <span className="font-sans text-xs font-semibold text-gold">
@@ -183,7 +180,7 @@ export default function Hero() {
               {/* Floating label */}
               <div
                 ref={floatLabelRef}
-                className="absolute -top-3 -left-3 rounded-lg bg-bg-card border border-gold/20 px-3 py-1.5 shadow-lg opacity-0"
+                className="absolute -top-3 -left-3 rounded-lg bg-bg-card border border-gold/20 px-3 py-1.5 shadow-lg"
               >
                 <span className="font-sans text-xs text-text-secondary">
                   +120 avaliações ⭐
@@ -197,7 +194,7 @@ export default function Hero() {
       {/* Scroll indicator */}
       <div
         ref={scrollRef}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-text-secondary opacity-0"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-text-secondary"
       >
         <span className="text-xs font-sans uppercase tracking-widest">
           Saiba mais
